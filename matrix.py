@@ -12,10 +12,6 @@ class Matrix:
             self.matrix = [[elements[row][col] for col in range(self.col)] for row in range(self.row)]
 
         self.issquare = self.row==self.col
-        value = 1
-        for row in range(self.row):
-            for col in range(self.col):
-                value *= self.matrix[row][col] if row==col else 1
 
     def update(self,new_mat:list):
         if not isinstance(new_mat,list):
