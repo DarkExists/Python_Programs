@@ -65,35 +65,50 @@ class Matrix:
         else:
             self.matrix = [[new_mat[row][col] for col in range(self.col)] for row in range(self.row)]
 
+    def isnull(self):
+        for row in range(self.row):
+            for col in range(self.col):
+                if self.matrix[row][col] != 0: return False
+        return True
+
     def isdiagonal(self):
         if self.issquare:
-            dig_ele = 0
+            dig_ele = False
             for row in range(self.row):
                 for col in range(self.col):
                     if row != col:
                         if self.matrix[row][col] !=0: return False
                     else:
-                        dig_ele += 1 if (row==col and self.matrix[row][col] != 0) else 0
-                        return True if dig_ele>0  else False
-                        return False
+                        dig_ele = True if (self.matrix[row][col] != 0) else False
+            return dig_ele
+        return False
 
     def isidentity(self):
         if self.issquare:
-            value = 0
+            iden = False
             for row in range(self.row):
                 for col in range(self.col):
                     if row != col:
                         if self.matrix[row][col] != 0 : return False
                     else:
                         if self.matrix[row][col] != 1: return False
-                        else: value += 1
-            return True if value==self.row else False
+                        else: iden = True
+            return iden
         return False
 
+    def isscalar(self):
+        if self.isnull(): return True
+        if self.isdiagonal():
+            value = self.matrix[0][0]
+            for index in range(self.row):
+                if self.matrix[index][index] != value: return False
+            return True
+        else: return False
+
 mat1 = Matrix(2,2,[[3,8],[4,6]])
-mat2 = Matrix(2,2,[[1,8],[4,6]])
-mat3 = mat1 - mat2
-print(mat1 != mat2)
+mat2 = Matrix(2,2,[[3,8],[4,6]])
+mat3 = mat1-mat2
+print(mat3.isscalar())
 for arr in mat3.matrix: print(arr)
 # print("Old Matrix")
 # for arr in mat.matrix: print(arr)
