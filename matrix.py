@@ -105,11 +105,53 @@ class Matrix:
             return True
         else: return False
 
-mat1 = Matrix(2,2,[[3,8],[4,6]])
-mat2 = Matrix(2,2,[[3,8],[4,6]])
-mat3 = mat1-mat2
-print(mat3.isscalar())
-for arr in mat3.matrix: print(arr)
+    def islowertri(self):
+        if self.issquare and not self.isnull():
+            for row in range(self.row):
+                for col in range(self.col):
+                    if (col>row and self.matrix[row][col] != 0) or (col<=row and self.matrix[row][col] == 0): return False
+            return True
+        else: return False
+
+    def isuppertri(self):
+        if self.issquare and not self.isnull():
+            for row in range(self.row):
+                for col in range(self.col):
+                    if (col<row and self.matrix[row][col] != 0) or (col>=row and self.matrix[row][col] == 0): return False
+            return True
+        else: return False
+
+    def issymmetric(self): return self == self.__invert__() if self.issquare else False
+
+    def det(self):
+        if self.row > 3 and self.col>3:
+            raise Exception("Only 3 x 3 size matrix allowed")
+        if self.row==1 and self.col==1: return self.matrix[0][0]
+        if self.issquare:
+            index = 0
+            index2 =  1
+            x1 = x2 = 1
+            pos = 0
+            neg = 0
+            for row in range(self.row):
+                x1 = x2 = 1;index=row
+                for col in range(self.col):
+                    x1 *= self.matrix[col][index]
+                    x2 *= self.matrix[index][index2]
+                    index += 1
+                    index2 -= 1
+                    if index>self.col-1: index=0
+                    if index2<0: index2=self.col-1
+                pos += x1;neg+=x2
+            return pos-neg
+        else: return False
+
+mat1 = Matrix(4,4,[[4,3,2,2],[0,1,-3,3],[0,-1,3,3],[0,3,1,1]])
+# mat2 = Matrix(2,2,[[3,8],[4,6]])
+# mat3 = mat1-mat2
+# mat1.det()
+print(mat1.det())
+for arr in mat1.matrix: print(arr)
 # print("Old Matrix")
 # for arr in mat.matrix: print(arr)
 # print("Square Matrix : %s\nIdentity Matrix : %s\nOrder : %s"%(mat.issquare,mat.isidentity(),mat.order))
